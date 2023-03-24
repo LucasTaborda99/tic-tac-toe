@@ -19,4 +19,20 @@ router.post('/readPlayer', (req, res) => {
     })
 })
 
+router.get('/getPlayers', (req, res) => {
+    const player = req.body
+    let query = 'SELECT * FROM players'
+    connection.query(query, (err, results) => {
+        if(!err) {
+            if(results.length <= 0) {
+                return res.status(400).json({message: 'Nenhum player encontrado'})
+            } else {
+                return res.status(200).json(results)
+            }
+        } else {
+            return res.status(500).json({message: 'Erro ao tentar buscar players'})
+        }
+    } )
+})
+
 module.exports = router
