@@ -6,11 +6,11 @@ require('dotenv').config()
 
 router.post('/readPlayer', (req, res) => {
     const player = req.body
-    let query = 'SELECT * FROM players WHERE nickname = ? and password = ?'
-    connection.query(query, [player.nickname, player.password], (err, results) => {
+    let query = 'SELECT * FROM players WHERE nickname = ?'
+    connection.query(query, [player.nickname], (err, results) => {
         if(!err) {
             if(results.length <= 0) {
-                return res.status(400).json({message: 'Nickname ou password incorreto'})
+                return res.status(400).json({message: 'Nickname não encontrado'})
             } else {
                 return res.status(200).json(results[0])
             }
@@ -22,13 +22,13 @@ router.post('/readPlayer', (req, res) => {
 
 router.get('/getPlayers', (req, res) => {
     const player = req.body
-    let query = 'SELECT * FROM players'
+    let query = 'SELECT * FROM players ORDER BY id'
     connection.query(query, (err, results) => {
         if(!err) {
             if(results.length <= 0) {
                 return res.status(400).json({message: 'Nenhum player encontrado'})
             } else {
-                return res.status(200).json(results[0])
+                return res.status(200).json(results)
             }
         } else {
             return res.status(500).json({message: 'Erro ao tentar buscar players'})
@@ -38,12 +38,12 @@ router.get('/getPlayers', (req, res) => {
 
 router.post('/createPlayer', (req, res) => {
     const player = req.body
-    query = 'SELECT email, nickname FROM players'
+    query = 'SELECT email, nickname FROM players WHERE email = ? OR nickname = ?'
     connection.query(query, [player.email, player.nickname], (err, results) => {
         if(!err) {
             if(results.length <= 0) {
                 let query = 'INSERT INTO players (name, nickname, email, password, status) VALUES (?, ?, ?, ?, "user")'
-                connection.query(query, [player.name, player.nickname,player.email, player.password], (err, results) => {
+                connection.query(query, [player.name, player.nickname, player.email, player.password], (err, results) => {
                     if(!err) {
                         return res.status(200).json({message: 'Player criado com sucesso'})
                     } else {
@@ -51,7 +51,7 @@ router.post('/createPlayer', (req, res) => {
                     }
                 })
             } else {
-                return res.status(500).json({message: 'Email ou nickname j� existentes'})
+                return res.status(500).json({message: 'Email ou nickname já existentes'})
             }
         } else {
             return res.status(500).json({message: 'Ops! Algo deu errado. Por favor, tente novamente mais tarde'})
