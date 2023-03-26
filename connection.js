@@ -1,3 +1,4 @@
+// Realizando a conexão com o database mysql, a partir do arquivo .env
 const mysql = require('mysql')
 require('dotenv').config()
 

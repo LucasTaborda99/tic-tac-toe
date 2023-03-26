@@ -1,3 +1,4 @@
+// Criando tabela "players"
 CREATE TABLE players (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(250),
@@ -8,4 +9,5 @@ CREATE TABLE players (
     UNIQUE (email, nickname)
 );
 
+// Inserindo registros na tabela "players"
 INSERT INTO players (name, nickname, email, password, status) VALUES ('Lucas', 'Taborda', 'lucasadmin123@gmail.com', 'admin', 'admin');

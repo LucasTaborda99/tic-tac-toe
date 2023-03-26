@@ -1,9 +1,13 @@
+// Rotas player - Todas as rotas dos players(jogadores) se encontram aqui
+
+// Importando as bibliotecas
 const { response } = require('express')
 const express = require('express')
 const connection = require('../connection')
 const router = express.Router()
 require('dotenv').config()
 
+// Seleciona as informações de um jogador por seu nickname
 router.post('/getPlayer', (req, res) => {
     const player = req.body
     let query = 'SELECT * FROM players WHERE nickname = ?'
@@ -20,6 +24,7 @@ router.post('/getPlayer', (req, res) => {
     })
 })
 
+// Seleciona as informações de todos os jogadores, ordenando pelo número do ID
 router.get('/readPlayers', (req, res) => {
     const player = req.body
     let query = 'SELECT * FROM players ORDER BY id'
@@ -36,6 +41,7 @@ router.get('/readPlayers', (req, res) => {
     } )
 })
 
+// Cria um novo jogador, verificando se já existe email ou nickname cadastrado no banco de dados
 router.post('/createPlayer', (req, res) => {
     const player = req.body
     let query = 'SELECT email, nickname FROM players WHERE email = ? OR nickname = ?'
@@ -59,6 +65,7 @@ router.post('/createPlayer', (req, res) => {
     })
 })
 
+// Atualiza um jogador de acordo com seu ID, verificando se já existe email ou nickname cadastrado em outro ID no banco de dados 
 router.patch('/updatePlayer', (req, res) => {
     const player = req.body
     let query = 'SELECT email, nickname FROM players WHERE (email = ? OR nickname = ?) AND id != ?'
@@ -85,6 +92,7 @@ router.patch('/updatePlayer', (req, res) => {
     })
 })
 
+// Deleta um jogador de acordo com o nickname, verificando se o nickname existe no banco de dados
 router.delete('/deletePlayer', (req, res) => {
     const player = req.body
     let query = 'DELETE FROM players WHERE nickname = ?'
