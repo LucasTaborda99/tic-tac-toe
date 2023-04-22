@@ -4,3 +4,6 @@ node_modules/
 
 # env settings
 .env
+
+#config.json
+config
